@@ -31,14 +31,14 @@ entry2 = Entry(font=('Verdana', 16), width=5)
 
 calc_button = Button(text='전송', font=('Verdana', 12), command=calculate)
 message_label.grid(row=0, column=0, sticky=W)
-recv_label.gird(row=1, column=0, sticky=W)
+recv_label.grid(row=1, column=0, sticky=W)
 entry1.grid(row=0, column=1)
 entry2.grid(row=1, column=1)
 calc_button.grid(row=0, column=2, padx=10, pady=10)
 
 # 데이터 수신을 위한 thread 생성과 실행
 cTread = threading.Thread(target=handler, args=(sock,))
-cTread.daemon = True 
+cTread.daemon = True
 cTread.start()
 
 root.mainloop()
