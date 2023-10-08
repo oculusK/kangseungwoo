@@ -6,7 +6,7 @@ import numpy as np
 ## TCP 사용
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ## server ip, port
-s.connect(('192.168.1.83', 8080))
+s.connect(('127.0.0.1', 8080))
 
 ## webcam 이미지 capture
 cam = cv2.VideoCapture(0)
@@ -27,7 +27,7 @@ while True:
     result, frame = cv2.imencode('.jpg', frame, encode_param)
     # frame을 String 형태로 변환
     data = np.array(frame)
-    stringData = data.tostring()
+    stringData = data.tobytes()
 
     # 서버에 데이터 전송
     # (str(len(stringData))).encode().ljust(16)

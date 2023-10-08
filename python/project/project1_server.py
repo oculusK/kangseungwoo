@@ -2,7 +2,6 @@ import socket
 import cv2
 import numpy as np
 
-
 # socket에서 수신한 버퍼를 반환하는 함수
 def recvall(sock, count):
     # 바이트 문자열
@@ -13,7 +12,6 @@ def recvall(sock, count):
         buf += newbuf
         count -= len(newbuf)
     return buf
-
 
 HOST = ''
 PORT = 8080
