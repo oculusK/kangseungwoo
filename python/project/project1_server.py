@@ -13,8 +13,29 @@ def recvall(sock, count):
         count -= len(newbuf)
     return buf
 
+def handler(s): # 클라이언트와 연결을 관리하는 함수(핸들러 함수)
+    while True:
+        try:
+            # 클라이언트로부터 데이터 수신
+            data = s.recv(1024)
+            if not data:
+                break
+
+            # 수신 데이터를 모든 클라이언트에게 전송
+            for client in clients:
+                client.send(data)
+        except:
+            # 오류 발생시 클라이언트 종료
+            clients.remove(s)
+            s.close()
+            break
+
+# 서버 설정
 HOST = ''
 PORT = 8080
+
+# 클라이언트 저장을 위한 리스트
+clients = []
 
 # TCP 사용
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -35,9 +56,16 @@ while True:
     # client에서 받은 stringData의 크기 (==(str(len(stringData))).encode().ljust(16))
     length = recvall(conn, 16)
     stringData = recvall(conn, int(length))
-    data = np.fromstring(stringData, dtype='uint8')
+    data = np.frombuffer(stringData, dtype='uint8')
 
     # data를 디코딩한다.
     frame = cv2.imdecode(data, cv2.IMREAD_COLOR)
     cv2.imshow('ImageWindow', frame)
     cv2.waitKey(1)
+
+# 클라이언트 연결 수락 및 스레드 생성
+while True:
+    client_socket, addr = s.accept()
+    clients.append(client_socket)
+    client_thread = threading.Thread(target=handler, args=(client_socket,))
+    client_thread.start()

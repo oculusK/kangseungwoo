@@ -1,12 +1,34 @@
 # -*- coding: utf8 -*-
 import cv2
 import socket
+import threading
 import numpy as np
 
 ## TCP 사용
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ## server ip, port
 s.connect(('127.0.0.1', 8080))
+
+def receive_msg():
+    while True:
+        try:
+            data = s.recv(1024)
+            if not data:
+                break
+            print(data.decode())
+        except:
+            break
+
+def send_msg():
+    while True:
+        message = input()
+        s.send(message.encode())
+
+recive_thread = threading.Thread(target =receive_msg)
+send_thread = threading.Thread(target=send_msg)
+
+recive_thread.start()
+send_thread.start()
 
 ## webcam 이미지 capture
 cam = cv2.VideoCapture(0)
