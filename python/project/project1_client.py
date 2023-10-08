@@ -6,7 +6,7 @@ import numpy as np
 ## TCP 사용
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ## server ip, port
-s.connect(('192.168.1.83', 8485))
+s.connect(('192.168.1.83', 8080))
 
 ## webcam 이미지 capture
 cam = cv2.VideoCapture(0)
