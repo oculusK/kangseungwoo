@@ -17,11 +17,11 @@ root = Tk()
 label = Label(root, text="0") # label 생성
 label.pack() # 레이블을 화면에 배치
 
-button1 = Button(root, width=10, text="plus", overrelief="solid", command = count_plus())
+button1 = Button(root, width=10, text="plus", overrelief="solid", command = count_plus)
 # count_plus 이벤트를 가지는 버튼 생성
 button1.pack() # 버튼을 화면에 배치
 
-button2 = Button(root, width=10, text="minus", overrelief="solid", command = count_minus())
+button2 = Button(root, width=10, text="minus", overrelief="solid", command = count_minus)
 # count_minus 이벤트를 가지는 버튼 생성
 button2.pack()
 

@@ -4,7 +4,7 @@ sock_list = []
 BUFFER = 1024
 port = 2500
 s_sock = socket.socket()
-s_sock.setsocket(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s_sock.bind(('localhost', port))
 s_sock.listen(5)
 sock_list.append(s_sock) # 서버 소켓을 소켓 목록(sock_list)에 추가
