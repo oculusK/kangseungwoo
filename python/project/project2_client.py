@@ -31,15 +31,15 @@ video_label.grid(row=0, column=0, rowspan=2, padx=10, pady=10)
 
 # 웹캠 영상 업데이트 함수
 def update_video():
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
     while True:
         ret, frame = cap.read()
         if ret:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            img = Image.fromarray(frame)
-            img = ImageTk.PhotoImage(image=img)
-            video_label.img = img
-            video_label.config(image=img)
-            video_label.after(10, update_video)
+            result, frame = cv2.imencode('.jpg', frame, encode_param)
+            data = np.array(frame)
+            stringData = data.tobytes()
+            s.sendall((str(len(stringData))).encode().ljust(16) + stringData)
 
 # 메시지 수신 함수
 def receive_message():
