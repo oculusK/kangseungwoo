@@ -46,11 +46,12 @@ sock_list = []
 s_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 s_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
 #print('Socket created')
+
 # 서버의 아이피와 포트번호 지정
 s_sock.bind((HOST, PORT))
 #print('Socket bind complete')
+
 # 클라이언트의 접속을 기다린다. (클라이언트 연결을 10개까지 받는다)
 s_sock.listen(10)
 #print('Socket now listening')
