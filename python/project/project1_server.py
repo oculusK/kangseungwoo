@@ -60,6 +60,7 @@ sock_list.append(s_sock)
 # 연결, conn에는 소켓 객체, addr은 소켓에 바인드 된 주소
 conn, addr = s_sock.accept()
 
+# 실시간 동영상
 while True:
     # client에서 받은 stringData의 크기
     length = recvall(conn, 16)
