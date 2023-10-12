@@ -5,7 +5,7 @@ async def handle_echo(reader, writer):
     message = data.decode()
     addr = writer.get_extra_info('peername')
 
-    print(f"Received {message!r} from {addr!r}")
+    print(f"Received {message!r} from {addr!r}") # jupyter notebook 환경이라서 !r을 넣음 빼도 괜찮다
 
     print(f"Send: {message!r}")
     writer.write(data)
@@ -16,8 +16,7 @@ async def handle_echo(reader, writer):
     await writer.wait_closed()
 
 async def main():
-    server = await asyncio.start_server(
-        handle_echo, '127.0.0.1', 2355)
+    server = await asyncio.start_server(handle_echo, '127.0.0.1', 2355)
 
     addrs = ', '.join(str(sock.getsockname()) for sock in server.sockets)
     print(f'Serving on {addrs}')
