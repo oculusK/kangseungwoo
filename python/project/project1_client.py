@@ -1,58 +1,54 @@
-# -*- coding: utf8 -*-
-import cv2
 import socket
-import threading
+import cv2
 import numpy as np
+import threading
+from UI import VideoChatUI
 
-## TCP 사용
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-## server ip, port
-s.connect(('127.0.0.1', 8080))
+class VideoChatClient:
+    def __init__(self, host, port):
+        self.UI = VideoChatUI(host, port, "영상 채팅 클라이언트")
+        self.UI.on_send_message = self.send_message_to_server
 
-def receive_msg():
-    while True:
-        try:
-            data = s.recv(1024)
-            if not data:
-                break
-            print(data.decode())
-        except:
-            break
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client_socket.connect((host, port))
 
-def send_msg():
-    while True:
-        message = input()
-        s.send(message.encode())
+        # 웹캠 초기화
+        self.cap = cv2.VideoCapture(0)
 
-recive_thread = threading.Thread(target =receive_msg)
-send_thread = threading.Thread(target=send_msg)
+        # 비디오 프레임 송신 스레드 시작
+        self.video_thread = threading.Thread(target=self.send_webcam)
+        self.video_thread.daemon = True
+        self.video_thread.start()
 
-recive_thread.start()
-send_thread.start()
+        # 메시지 수신 스레드 시작
+        self.receive_thread = threading.Thread(target=self.receive_message)
+        self.receive_thread.daemon = True
+        self.receive_thread.start()
 
-## webcam 이미지 capture
-cam = cv2.VideoCapture(0)
+        # 클라이언트 GUI 시작
+        self.UI.start()
 
-## 이미지 속성 변경 3 = width, 4 = height
-cam.set(3, 320);
-cam.set(4, 240);
+    def send_webcam(self):
+        while True:
+            ret, frame = self.cap.read()
+            if not ret:
+                continue
+            _, encoded_frame = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 60])
+            encoded_frame = encoded_frame.tobytes()
+            self.client_socket.send(encoded_frame)
 
-## 0~100에서 90의 이미지 품질로 설정 (default = 95)
-encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+    def send_message_to_server(self, message):
+        self.client_socket.send(message.encode())
 
-while True:
-    # 비디오의 한 프레임씩 읽는다.
-    # 제대로 읽으면 ret = True, 실패면 ret = False, frame에는 읽은 프레임
-    ret, frame = cam.read()
-    # cv2. imencode(ext, img [, params])
-    # encode_param의 형식으로 frame을 jpg로 이미지를 인코딩한다.
-    result, frame = cv2.imencode('.jpg', frame, encode_param)
-    # frame을 String 형태로 변환
-    data = np.array(frame)
-    stringData = data.tobytes()
+    def receive_message(self):
+        while True:
+            try:
+                message = self.client_socket.recv(1024).decode()
+                if not message:
+                    break
+                self.UI.receive_message(message)
+            except:
+                pass
 
-    # 서버에 데이터 전송
-    # (str(len(stringData))).encode().ljust(16)
-    s.sendall((str(len(stringData))).encode().ljust(16) + stringData)
-
-cam.release()
+if __name__ == "__main__":
+    client = VideoChatClient('', 2323)  # 서버의 IP 주소와 포트 번호를 지정하세요
