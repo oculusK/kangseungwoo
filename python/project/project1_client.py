@@ -1,15 +1,23 @@
 import socket
 import cv2
+import numpy as np
 import threading
+import tkinter as tk
 from UI import VideoChatUI
+
 
 class VideoChatClient:
     def __init__(self, host, port):
-        self.UI = VideoChatUI(host, port, "영상 채팅 클라이언트")
+        self.UI = VideoChatUI(tk.Tk(), "영상 채팅 클라이언트")
         self.UI.on_send_message = self.send_message_to_server
 
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.connect((host, port))
+
+        try:
+            self.client_socket.connect((host, port))
+        except Exception as e:
+            print("연결 오류:", e)
+            return
 
         # 웹캠 초기화
         self.cap = cv2.VideoCapture(0)
@@ -46,8 +54,10 @@ class VideoChatClient:
                 if not message:
                     break
                 self.UI.receive_message(message)
-            except:
-                pass
+            except Exception as e:
+                print("메시지 수신 오류:", e)
+                break
+
 
 if __name__ == "__main__":
     client = VideoChatClient('', 2323)  # 서버의 IP 주소와 포트 번호를 지정하세요
