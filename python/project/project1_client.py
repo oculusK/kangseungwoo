@@ -7,15 +7,15 @@ from UI import VideoChatUI
 
 class VideoChatClient:
     def __init__(self, host, port):
-        self.UI = VideoChatUI(tk.Tk(), "영상 채팅 클라이언트")
-        self.UI.on_send_message = self.send_message_to_server
+        self.UI = VideoChatUI(tk.Tk(), "영상 채팅 클라이언트") # tkinter 연결, 프로그램 제목
+        self.UI.on_send_message = self.send_message_to_server   # 서버에게 메시지 보내기
 
         # 소켓 초기화
-        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # TCP 연결
         self.client_socket.connect((host, port))
 
         # 웹캠 초기화
-        self.cap = cv2.VideoCapture(1)
+        self.cap = cv2.VideoCapture(1) # 0 = 기본카메라, 1 = 두번째 카메라, '.mp4' = 비디오 파일 읽기
 
         # 비디오 프레임 송신 스레드 시작
         self.video_thread = threading.Thread(target=self.send_webcam)

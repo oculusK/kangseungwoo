@@ -6,9 +6,9 @@ import tkinter as tk
 
 class VideoChatServer:
     def __init__(self, host, port):
-        self.UI = VideoChatUI(tk.Tk(), "영상 채팅 서버")
-        self.UI.on_send_message = self.send_message_to_clients
-        self.clients = []
+        self.UI = VideoChatUI(tk.Tk(), "영상 채팅 서버")     # tkinter 연결, 프로그램 제목
+        self.UI.on_send_message = self.send_message_to_clients  # 메시지를 누르면 클라이언트에게 감
+        self.clients = [] # 클라이언트 list 선언
 
         # 웹캠 초기화
         self.cap = cv2.VideoCapture(0)
@@ -16,7 +16,7 @@ class VideoChatServer:
         # 소켓 초기화
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((host, port))
-        self.server_socket.listen(10)
+        self.server_socket.listen(10) # 10개까지 연결 가능
 
         # 웹캠 영상 전송 스레드 시작
         self.webcam_thread = threading.Thread(target=self.send_webcam)
@@ -73,5 +73,3 @@ class VideoChatServer:
 
 if __name__ == "__main__":
     server = VideoChatServer('', 2323)  # 호스트 및 포트를 지정하여 서버를 시작합니다.
-
-
