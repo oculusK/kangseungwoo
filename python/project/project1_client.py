@@ -53,11 +53,11 @@ class VideoChatClient:
                 message = self.client_socket.recv(1024).decode()
                 if not message:
                     break
-                self.UI.receive_message(message)
+                self.UI.receive_message("클라이언트 : " + message)
             except Exception as e:
                 print("메시지 수신 오류:", e)
                 break
 
 
 if __name__ == "__main__":
-    client = VideoChatClient('', 2323)  # 서버의 IP 주소와 포트 번호를 지정하세요
+    client = VideoChatClient('localhost', 2323)  # 서버의 IP 주소와 포트 번호를 지정하세요
