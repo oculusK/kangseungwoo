@@ -1,6 +1,5 @@
 import socket
 import cv2
-import numpy as np
 import threading
 import tkinter as tk
 from UI import VideoChatUI
@@ -11,16 +10,12 @@ class VideoChatClient:
         self.UI = VideoChatUI(tk.Tk(), "영상 채팅 클라이언트")
         self.UI.on_send_message = self.send_message_to_server
 
+        # 소켓 초기화
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        try:
-            self.client_socket.connect((host, port))
-        except Exception as e:
-            print("연결 오류:", e)
-            return
+        self.client_socket.connect((host, port))
 
         # 웹캠 초기화
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(1)
 
         # 비디오 프레임 송신 스레드 시작
         self.video_thread = threading.Thread(target=self.send_webcam)
@@ -50,7 +45,7 @@ class VideoChatClient:
     def receive_message(self):
         while True:
             try:
-                message = self.client_socket.recv(1024).decode()
+                message = self.client_socket.recv(1024).decode('utf-8')
                 if not message:
                     break
                 self.UI.receive_message("클라이언트 : " + message)
