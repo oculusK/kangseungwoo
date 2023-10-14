@@ -32,7 +32,7 @@ class VideoChatServer:
         # 서버 GUI 시작
         tk.mainloop()
 
-        # 패킷 분석
+        # 영상이 끝나면 패킷 분석
         while True:
             sniff(iface="Software Loopback Interface 1", prn=lambda x: x.show())
 

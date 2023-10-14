@@ -35,7 +35,7 @@ class VideoChatClient:
         # 클라이언트 GUI 시작
         self.UI.start()
 
-        # 패킷 분석
+        # 영상이 끝나면 패킷 분석
         while True:
             sniff(iface="Software Loopback Interface 1", prn=lambda x: x.show())
 
