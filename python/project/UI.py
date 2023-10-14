@@ -1,8 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 
-
-
 class VideoChatUI:
     def __init__(self, window, title):
         self.window = window
@@ -29,24 +27,24 @@ class VideoChatUI:
         window.grid_columnconfigure(0, weight=4)
         window.grid_rowconfigure(1, weight=1)
 
-    def show_frame(self, frame):
+    def show_frame(self, frame): # 프레임을 보여주는 정의
         photo = ImageTk.PhotoImage(image=Image.fromarray(frame))
         self.label.config(image=photo)
         self.label.image = photo
 
-    def send_message(self):
+    def send_message(self): # 메시지 보내는 정의
         message = self.entry.get()
         if message:
             self.entry.delete(0, 'end')
             self.on_send_message(message)
 
-    def on_send_message(self, message):
+    def on_send_message(self, message): # 메시지 보내기 눌렀을때 정의
         pass
 
-    def receive_message(self, message):
+    def receive_message(self, message): # 메시지가 보내졌을때 text에 표시
         self.chat_text.config(state=tk.NORMAL)
         self.chat_text.insert(tk.END, message + '\n')
         self.chat_text.config(state=tk.DISABLED)
 
-    def start(self):
+    def start(self): # 화면에 표시
         self.window.mainloop()

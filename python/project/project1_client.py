@@ -15,7 +15,7 @@ class VideoChatClient:
         self.client_socket.connect((host, port))
 
         # 웹캠 초기화
-        self.cap = cv2.VideoCapture(1) # 0 = 기본카메라, 1 = 두번째 카메라, '.mp4' = 비디오 파일 읽기
+        self.cap = cv2.VideoCapture('AKMU_후라이의 꿈') # 0 = 기본카메라, 1 = 두번째 카메라, '.mp4' = 비디오 파일 읽기
 
         # 비디오 프레임 송신 스레드 시작
         self.video_thread = threading.Thread(target=self.send_webcam)
@@ -50,7 +50,7 @@ class VideoChatClient:
                     break
                 self.UI.receive_message("클라이언트 : " + message)
             except Exception as e:
-                print("메시지 수신 오류:", e)
+                print("메시지 수신 오류:", e) # 오류 확인 하기
                 break
 
 

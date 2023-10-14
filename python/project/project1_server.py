@@ -11,7 +11,7 @@ class VideoChatServer:
         self.clients = [] # 클라이언트 list 선언
 
         # 웹캠 초기화
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(0) # 0 = 기본카메라, 1 = 두번째 카메라, '.mp4' = 비디오 파일 읽기
 
         # 소켓 초기화
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
