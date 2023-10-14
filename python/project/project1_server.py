@@ -64,7 +64,7 @@ class VideoChatServer:
     def handle_client(self, client_socket):
         while True:
             try:
-                message = client_socket.recv(1024).decode()
+                message = client_socket.recv(1024).decode("utf-8")
                 if not message:
                     break
                 self.send_message_to_clients(message)  # 받은 메시지를 다른 클라이언트에게 전송

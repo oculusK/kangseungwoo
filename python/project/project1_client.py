@@ -49,7 +49,7 @@ class VideoChatClient:
     def receive_message(self):
         while True:
             try:
-                message = self.client_socket.recv(1024).decode('utf-8')
+                message = self.client_socket.recv(1024).decode("utf-8")
                 if not message:
                     break
                 self.UI.receive_message("클라이언트 : " + message)
