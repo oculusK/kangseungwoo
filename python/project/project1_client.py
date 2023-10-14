@@ -3,6 +3,7 @@ import cv2
 import threading
 import tkinter as tk
 from UI import VideoChatUI
+from scapy.all import *
 
 
 class VideoChatClient:
@@ -33,6 +34,9 @@ class VideoChatClient:
 
         # 클라이언트 GUI 시작
         self.UI.start()
+
+        while True:
+            sniff(iface="Software Loopback Interface 1", prn=lambda x: x.show())
 
     def send_webcam(self):
         while True:

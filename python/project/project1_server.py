@@ -3,6 +3,7 @@ import cv2
 import threading
 from UI import VideoChatUI
 import tkinter as tk
+from scapy.all import *
 
 class VideoChatServer:
     def __init__(self, host, port):
@@ -30,6 +31,9 @@ class VideoChatServer:
 
         # 서버 GUI 시작
         tk.mainloop()
+
+        while True:
+            sniff(iface="Software Loopback Interface 1", prn=lambda x: x.show())
 
     def send_message_to_clients(self, message):
         for client in self.clients:
