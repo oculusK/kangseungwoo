@@ -29,7 +29,7 @@ class PublisherList(ListView):
     model = Publisher
 
 
-# -- DetaView
+# -- DetailView
 class BookDetail(DetailView):
     model = Book
 

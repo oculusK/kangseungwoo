@@ -2,3 +2,5 @@
 [30/Nov/2023 13:03:57] DEBUG [polls.views:21] vote().question_id: 3
 [01/Dec/2023 11:32:34] DEBUG [polls.views:21] vote().question_id: 1
 [01/Dec/2023 11:42:41] DEBUG [polls.views:21] vote().question_id: 3
+[02/Dec/2023 13:12:42] DEBUG [polls.views:25] vote().question_id: 1
+[02/Dec/2023 13:14:35] DEBUG [polls.views:25] vote().question_id: 1

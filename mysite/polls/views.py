@@ -5,17 +5,21 @@ from polls.models import Question, Choice
 from polls.forms import NameForm
 import logging
 logger = logging.getLogger(__name__)
+from django.views.generic import ListView
+from django.views.generic import DetailView
 
 # Create your views here.
 
-def index(request):
-    latest_question_list = Question.objects.all().order_by('-pub_date')[:5]
-    context = {'latest_question_list': latest_question_list}
-    return render(request, 'polls/index.html', context) # 화면 보여줄려면 render 써야함
+class IndexView(ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
 
-def detail(request, question_id):
-    question = get_object_or_404(Question, pk=question_id) # DB에 아무것도 안넣었다면 404 낫 파운드
-    return render(request, 'polls/detail.html', {'question': question})
+    def get_queryset(self):
+        return Question.objects.order_by('-pub_date')[:5]
+
+class DetailView(DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
 
 def vote(request, question_id):
     logger.debug(f"vote().question_id: {question_id}")
@@ -35,9 +39,9 @@ def vote(request, question_id):
         # 항상 HttpResponseRedirect를 반환하여 리다이렉션 처리함
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
-def results(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'polls/results.html', {'question': question})
+class ResultsView(DetailView):
+    model = Question
+    template_name = 'polls/results.html'
 
 def name(request):
     if request.method == 'POST':
